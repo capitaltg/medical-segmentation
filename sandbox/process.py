@@ -7,6 +7,7 @@ import os
 import click
 import logging
 import matplotlib.pyplot as plt
+import numpy as np
 from pydicom import dcmread
 
 from helpers import build_mask, normalize_intensity
@@ -30,14 +31,13 @@ def run(base_path, subdir, save_images=False, mode='training'):
         contour_obj = fetch_contour_sop_instance_uid(metadata, sop_uid)
 
         if not contour_obj:
-            # if slice has no regions of interest, skip it for now
-            logging.info("Image file at index %s has no ROI data, skipping...", dicom_file)
-            continue
-
-        num_with_rois += 1
-        contour_coord = contour_obj.ContourData
-        contour_pixels = contour_to_pixels(contour_coord, dicom_img)
-        contour_mask = build_mask(contour_pixels)
+            logging.info("Image file SOPInstanceUID %s has no ROI data, using empty mask...", sop_uid)
+            contour_mask = np.zeros((512, 512), np.uint8)
+        else:
+            num_with_rois += 1
+            contour_coord = contour_obj.ContourData
+            contour_pixels = contour_to_pixels(contour_coord, dicom_img)
+            contour_mask = build_mask(contour_pixels)
 
         imgarr = normalize_intensity(imgarr)
 
