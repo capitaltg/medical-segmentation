@@ -1,5 +1,7 @@
 credentials
 lungs/
+sandbox/training-output/
+sandbox/testing-output/
 .DS_Store
 # Byte-compiled / optimized / DLL files
 __pycache__/
