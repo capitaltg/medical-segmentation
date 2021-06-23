@@ -1,0 +1,31 @@
+name: Backend API Integration Pipeline
+
+on:
+  push:
+    paths: ["backend/**"]
+    branches: [master]
+  pull_request:
+    paths: ["backend/**"]
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.8.6
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8.6
+      - uses: actions/checkout@v2
+      - name: Install data processing dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          pip install pylint
+      - name: Install backend dependencies
+        run: |
+          if [ -f backend/requirements.txt ]; then pip install -r backend/requirements.txt; fi
+      - name: Pylint
+        run: |
+          pylint backend --rcfile=.pylintrc --init-hook='import sys; sys.path.append("backend/")'
