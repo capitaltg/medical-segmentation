@@ -19,8 +19,8 @@ RUN pip install -r requirements.txt
 
 COPY *.py .
 
-RUN python3 process.py --mode training
-RUN python3 process.py --mode testing
+RUN python3 process.py --mode train
+RUN python3 process.py --mode val
 
 COPY *.ipynb .
 
