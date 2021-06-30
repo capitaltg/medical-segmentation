@@ -16,10 +16,10 @@ from helpers import fetch_contour_sop_instance_uid
 
 
 def run(base_path, subdir, save_images=False, mode='training'):
-    metadata = dcmread(os.path.join(base_path, subdir, 'metadata', '1-1.dcm'))
+    metadata = dcmread(os.path.join(base_path, 'metadata', '1-1.dcm'))
     num_with_rois = 0
 
-    img_dir = os.path.join(base_path, subdir, 'images')
+    img_dir = os.path.join(base_path, 'images')
 
     for dicom_file in os.listdir(img_dir):
         print(dicom_file)
@@ -52,7 +52,7 @@ def run(base_path, subdir, save_images=False, mode='training'):
 @click.option('--mode', default='training', help='Training or testing processing mode.')
 def process_images(mode):
     base_dir = './lungs'
-    img_folder_base = os.path.join(base_dir, f'{mode}-data')
+    img_folder_base = os.path.join(base_dir, f'{mode}')
     subdirs = os.listdir(img_folder_base)
     for target_subdir in [d for d in subdirs if os.path.isdir(os.path.join(img_folder_base, d))]:
         dataset_path = os.path.join(img_folder_base, target_subdir)
