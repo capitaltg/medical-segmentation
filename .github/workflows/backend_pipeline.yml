@@ -2,10 +2,10 @@ name: Backend API Integration Pipeline
 
 on:
   push:
-    paths: ["backend/**"]
+    paths: ["sandbox/**"]
     branches: [master]
   pull_request:
-    paths: ["backend/**"]
+    paths: ["sandbox/**"]
     branches: [master]
 
 jobs:
@@ -23,9 +23,11 @@ jobs:
         run: |
           python3 -m pip install --upgrade pip
           pip install pylint
-      - name: Install backend dependencies
+          pip install nbqa
+      - name: Install sandbox dependencies
         run: |
-          if [ -f backend/requirements.txt ]; then pip install -r backend/requirements.txt; fi
+          if [ -f sandbox/requirements.txt ]; then pip install -r sandbox/requirements.txt; fi
       - name: Pylint
         run: |
-          pylint backend --rcfile=.pylintrc --init-hook='import sys; sys.path.append("backend/")'
+          pylint sandbox --rcfile=.pylintrc --init-hook='import sys; sys.path.append("sandbox/")'
+          nbqa pylint my_notebook.ipynb --disable=C0114
