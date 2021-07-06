@@ -71,7 +71,7 @@ def normalize_intensity(img):
     return (img - HOUNSFIELD_MIN) / HOUNSFIELD_RANGE
 
 
-def save_images_to_files(plt, subdir, imgarr, contour_mask, dicom_file, output_dir = 'test-output'):
+def save_images_to_files(plt, subdir, imgarr, contour_mask, dicom_file, output_dir = 'val-output'):
     masks_dir = os.path.join(output_dir, 'masks', 'lung_l')
     images_dir = os.path.join(output_dir, 'images', 'lung_l')
     plt.axis('off')
