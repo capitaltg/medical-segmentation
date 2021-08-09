@@ -28,15 +28,19 @@ def run(base_path, subdir, save_images=False, mode='training'):
         dicom_img = dcmread(full_dicom_path)
         sop_uid = dicom_img.SOPInstanceUID
         imgarr = dicom_img.pixel_array
-        contour_obj = fetch_contour_sop_instance_uid(metadata, sop_uid)
+        contour_obj = fetch_contour_sop_instance_uid(metadata, sop_uid, base_path)
 
         if not contour_obj:
-            logging.info("Image file SOPInstanceUID %s has no ROI data, using empty mask...", sop_uid)
+            logging.info(
+                "Image file SOPInstanceUID %s has no ROI data, using empty mask...", sop_uid)
             contour_mask = np.zeros((512, 512), np.uint8)
         else:
             num_with_rois += 1
-            contour_coord = contour_obj.ContourData
-            contour_pixels = contour_to_pixels(contour_coord, dicom_img)
+            contour_pixels = []
+            for c in contour_obj:
+                contour_coord = c.ContourData
+                contour_pixels_var = contour_to_pixels(contour_coord, dicom_img)
+                contour_pixels += contour_pixels_var
             contour_mask = build_mask(contour_pixels)
 
         imgarr = normalize_intensity(imgarr)
