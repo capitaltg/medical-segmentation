@@ -63,6 +63,7 @@ def fetch_contour_sop_instance_uid(metadata, uid, base_path):
                 return contour_list
 
 def find_ROI_name(dataset):
+    ROI_name = ''
     if 'IPSI' in dataset:     ROI_name = 'LUNG_IPSI'
     elif 'CNTR' in dataset:   ROI_name = 'LUNG_CNTR'
     elif 'LUNG1' in dataset:  ROI_name = 'Lung-Left'
