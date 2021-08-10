@@ -51,11 +51,11 @@ def fetch_contour_sop_instance_uid(metadata, uid):
     roi_seq = metadata.ROIContourSequence
     for roi in roi_seq:
         if structures[roi.ReferencedROINumber] == 'Lung_L': # lung L
-            print('ROI Name:', structures[roi.ReferencedROINumber], roi.ReferencedROINumber)
+            logging.info('ROI Name:', structures[roi.ReferencedROINumber], roi.ReferencedROINumber)
             contour_seq = roi.ContourSequence
             for c in contour_seq:
                 if c.ContourImageSequence[0].ReferencedSOPInstanceUID == uid:
-                    print("OK!")
+                    logging.info("OK!")
                     return c
 
 

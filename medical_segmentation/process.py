@@ -22,7 +22,7 @@ def run(base_path, subdir, save_images=False, mode='training'):
     img_dir = os.path.join(base_path, 'images')
 
     for dicom_file in os.listdir(img_dir):
-        print(dicom_file)
+        logging.info("dicom_file:", dicom_file)
         full_dicom_path = os.path.join(img_dir, dicom_file)
 
         dicom_img = dcmread(full_dicom_path)

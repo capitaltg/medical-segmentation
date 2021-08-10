@@ -1,5 +1,8 @@
 boto
+awscli
 splitfolders
+pynrrd
+SimpleITK==1.2.4
 pandas==1.2.4
 tensorflow==2.5.0
 scipy==1.6.3
@@ -7,7 +10,7 @@ numpy==1.19.5
 ipython==7.22.0
 jupyter==1.0.0
 matplotlib==3.4.1
-keras-unet
+keras_unet
 Pillow==8.2.0
 click==8.0.1
 pydicom==2.1.2
