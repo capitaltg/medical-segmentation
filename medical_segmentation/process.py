@@ -39,8 +39,7 @@ def run(base_path, subdir, save_images=False, mode='training'):
             contour_pixels = []
             for c in contour_obj:
                 contour_coord = c.ContourData
-                contour_pixels_var = contour_to_pixels(contour_coord, dicom_img)
-                contour_pixels += contour_pixels_var
+                contour_pixels.extend(contour_to_pixels(contour_coord, dicom_img))
             contour_mask = build_mask(contour_pixels)
 
         imgarr = normalize_intensity(imgarr)
