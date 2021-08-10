@@ -49,9 +49,9 @@ def contour_to_pixels(contour_coord, ds):
 def fetch_contour_sop_instance_uid(metadata, uid, base_path):
     structures = {item.ROINumber: item.ROIName for item in metadata.StructureSetROISequence}
     roi_seq = metadata.ROIContourSequence
-    left_lung_ROI = find_ROI_name(base_path)                  
+    left_lung_roi = find_roi_name(base_path)                  
     for roi in roi_seq:
-        if structures[roi.ReferencedROINumber] == left_lung_ROI:
+        if structures[roi.ReferencedROINumber] == left_lung_roi:
             print('ROI Name:', structures[roi.ReferencedROINumber], roi.ReferencedROINumber)
             contour_seq = roi.ContourSequence
             contour_list = []
@@ -62,13 +62,21 @@ def fetch_contour_sop_instance_uid(metadata, uid, base_path):
             if len(contour_list) >= 1:
                 return contour_list
 
-def find_ROI_name(dataset):
-    ROI_name = ''
-    if 'IPSI' in dataset:     ROI_name = 'LUNG_IPSI'
-    elif 'CNTR' in dataset:   ROI_name = 'LUNG_CNTR'
-    elif 'LUNG1' in dataset:  ROI_name = 'Lung-Left'
-    elif 'LCTSC' in dataset:  ROI_name = 'Lung_L'
-    return ROI_name
+def find_roi_name(dataset):
+    try:
+        roi_name = ''
+        if 'IPSI' in dataset:     
+            roi_name = 'LUNG_IPSI'
+        elif 'CNTR' in dataset:   
+            roi_name = 'LUNG_CNTR'
+        elif 'LUNG1' in dataset:  
+            roi_name = 'Lung-Left'
+        elif 'LCTSC' in dataset:  
+            roi_name = 'Lung_L'
+        return roi_name
+    
+    except ValueError:
+        raise ValueError("unknown dataset")
 
 
 def save_image_array(img_arr, target_path):
