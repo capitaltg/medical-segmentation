@@ -46,29 +46,28 @@ def add_metadata(root):
             shutil.copy(join(root, subdir, "metadata", "1-1.dcm"), join("data", split, subdir, "metadata"))
 
 
-def split_data(w_dir, train_split, val_split, test_split):
+def split_data(base_dir, train_split, val_split, test_split):
     """
     splits data into three folders keeping all images for each patient together
     """
-    wd = w_dir
     os.mkdir('train')
     os.mkdir('test')
     os.mkdir('val')
 
-    training_data = len(listdir(wd)) * train_split
-    val_data = len(listdir(wd)) * val_split
-    test_data = len(listdir(wd)) * test_split
+    training_data = len(listdir(base_dir)) * train_split
+    val_data = len(listdir(base_dir)) * val_split
+    test_data = len(listdir(base_dir) * test_split
 
     num_dir = 1
     for dir in listdir(wd):
-    if '.DS' not in dir:
-      if num_dir < training_data:
-        move(join(wd, dir), 'train')
-      elif num_dir >= training_data and num_dir < (training_data + test_data):
-        move(join(wd, dir), 'test')
-      elif num_dir >= (training_data + test_data):
-        move(join(wd, dir), 'val')
-      num_dir += 1
+        if '.DS' not in dir:
+          if num_dir < training_data:
+            move(join(base_dir, dir), 'train')
+          elif num_dir >= training_data and num_dir < (training_data + test_data):
+            move(join(base_dir, dir), 'test')
+          elif num_dir >= (training_data + test_data):
+            move(join(base_dir, dir), 'val')
+          num_dir += 1
     
 def main():
     # example root
