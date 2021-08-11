@@ -64,16 +64,14 @@ def fetch_contour_sop_instance_uid(metadata, uid, base_path):
 
 def find_roi_name(dataset):
     try:
-        roi_name = ''
         if 'IPSI' in dataset:     
-            roi_name = 'LUNG_IPSI'
+            return 'LUNG_IPSI'
         elif 'CNTR' in dataset:   
-            roi_name = 'LUNG_CNTR'
+            return 'LUNG_CNTR'
         elif 'LUNG1' in dataset:  
-            roi_name = 'Lung-Left'
+            return 'Lung-Left'
         elif 'LCTSC' in dataset:  
-            roi_name = 'Lung_L'
-        return roi_name
+            return 'Lung_L'
     
     except ValueError:
         raise ValueError("unknown dataset")
