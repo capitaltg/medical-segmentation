@@ -32,5 +32,6 @@ NOTE ABOUT TRAINING: depending on the amount of data used in the training proces
 ## Requesting data
 If you would like to request access to the complete dataset, you will need to complete a data usage agreement with NCTN/NCORP Data Archive.  
  
+Fun visualization of the true mask and predicted mask shown on top of the CT scans for a patient.
 ![](lung_patient_results.gif)
 ​​
