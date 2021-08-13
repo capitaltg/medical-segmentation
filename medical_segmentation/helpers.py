@@ -46,17 +46,32 @@ def contour_to_pixels(contour_coord, ds):
     return pixels
 
 
-def fetch_contour_sop_instance_uid(metadata, uid):
+def fetch_contour_sop_instance_uid(metadata, uid, base_path):
     structures = {item.ROINumber: item.ROIName for item in metadata.StructureSetROISequence}
     roi_seq = metadata.ROIContourSequence
+    left_lung_roi = find_roi_name(base_path)                  
     for roi in roi_seq:
-        if structures[roi.ReferencedROINumber] == 'Lung_L': # lung L
+        if structures[roi.ReferencedROINumber] == left_lung_roi:
             print('ROI Name:', structures[roi.ReferencedROINumber], roi.ReferencedROINumber)
             contour_seq = roi.ContourSequence
+            contour_list = []
             for c in contour_seq:
                 if c.ContourImageSequence[0].ReferencedSOPInstanceUID == uid:
+                    contour_list.append(c)
                     print("OK!")
-                    return c
+            if len(contour_list) >= 1:
+                return contour_list
+
+def find_roi_name(dataset):
+    if 'IPSI' in dataset:     
+        return 'LUNG_IPSI'
+    elif 'CNTR' in dataset:   
+        return 'LUNG_CNTR'
+    elif 'LUNG1' in dataset:  
+        return 'Lung-Left'
+    elif 'LCTSC' in dataset:  
+        return 'Lung_L'
+    raise ValueError("unknown dataset")
 
 
 def save_image_array(img_arr, target_path):
