@@ -1,7 +1,7 @@
 # Medical Image Segmentation
 The aim of the medical image segmentation project is to identify and segment internal organs from medical images using convolutional neural networks, a process that is usually done manually by doctors when treating patients for cancer. At this stage, the left lung has been the focus of this project.
 
-![docs](lung_patient_results.gif)
+![](docs/lung_patient_results.gif)
 
 ## Project Components
 The main components of this project are as follows: 
