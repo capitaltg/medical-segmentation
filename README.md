@@ -1,7 +1,7 @@
 # Medical Image Segmentation
 The aim of the medical image segmentation project is to identify and segment internal organs from medical images using convolutional neural networks, a process that is usually done manually by doctors when treating patients for cancer. At this stage, the left lung has been the focus of this project.
 
-![](docs/lung_patient_results.gif =50x50)
+![](docs/lung_patient_results.gif |width=50, height=50)
 
 ## Project Components
 The main components of this project are as follows: 
@@ -9,7 +9,6 @@ The main components of this project are as follows:
 - iPython Notebook for resampling data - after the data access, the data needs to be run through the resampling code to ensure uniformity of the data
 - iPython Notebook for training 2D model and calculating the surface dice score - the 2D_segmentation_model iPython notebook allows for the training of the 2D model
 - iPython Notebook for training 3D model - this notebook allows for the training of the 3D model
-- A python script containing the code for the calculation of the surface dice metrics
 
 ## Setup and Usage
 1. Clone the repository to your local machine and run the project using the dockerfile:
