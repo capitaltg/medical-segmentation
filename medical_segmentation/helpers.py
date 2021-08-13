@@ -71,9 +71,7 @@ def find_roi_name(dataset):
         return 'Lung-Left'
     elif 'LCTSC' in dataset:  
         return 'Lung_L'
-    
-    except ValueError:
-        raise ValueError("unknown dataset")
+    raise ValueError("unknown dataset")
 
 
 def save_image_array(img_arr, target_path):
