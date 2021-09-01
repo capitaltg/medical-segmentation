@@ -7,13 +7,12 @@ import os
 import logging
 
 import click
-import matplotlib.pyplot as plt
 import numpy as np
 from pydicom import dcmread
 
-from helpers import build_mask, normalize_intensity
-from helpers import contour_to_pixels, save_images_to_files
-from helpers import fetch_contour_sop_instance_uid
+from preprocessing.helpers import build_mask, normalize_intensity
+from preprocessing.helpers import contour_to_pixels, save_images_to_files
+from preprocessing.helpers import fetch_contour_sop_instance_uid
 
 
 def run(base_path, subdir, save_images=False, mode='training'):
@@ -42,7 +41,7 @@ def run(base_path, subdir, save_images=False, mode='training'):
         imgarr = normalize_intensity(imgarr)
 
         if save_images:
-            save_images_to_files(plt, subdir, imgarr, contour_mask, dicom_file, f'{mode}-output')
+            save_images_to_files(subdir, imgarr, contour_mask, dicom_file, f'{mode}-output')
 
     logging.info("Total images with ROIs %s, %s", num_with_rois, (num_with_rois/130.) * 100)
 
