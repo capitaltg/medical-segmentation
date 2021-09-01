@@ -4,8 +4,9 @@ suitable for ML training purposes
 '''
 
 import os
-import click
 import logging
+
+import click
 import matplotlib.pyplot as plt
 import numpy as np
 from pydicom import dcmread
@@ -22,16 +23,15 @@ def run(base_path, subdir, save_images=False, mode='training'):
     img_dir = os.path.join(base_path, 'images')
 
     for dicom_file in os.listdir(img_dir):
-        print(dicom_file)
         full_dicom_path = os.path.join(img_dir, dicom_file)
 
         dicom_img = dcmread(full_dicom_path)
-        sop_uid = dicom_img.SOPInstanceUID
         imgarr = dicom_img.pixel_array
-        contour_obj = fetch_contour_sop_instance_uid(metadata, sop_uid)
+        contour_obj = fetch_contour_sop_instance_uid(metadata, dicom_img.SOPInstanceUID)
 
         if not contour_obj:
-            logging.info("Image file SOPInstanceUID %s has no ROI data, using empty mask...", sop_uid)
+            logging.info("Image file SOPInstanceUID %s has no ROI data, using empty mask.",
+                dicom_img.SOPInstanceUID)
             contour_mask = np.zeros((512, 512), np.uint8)
         else:
             num_with_rois += 1
