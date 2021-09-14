@@ -12,7 +12,7 @@ Install [Docker Desktop](https://www.docker.com/products/docker-desktop)
 1. Clone the repository to your local machine
 2. `docker build -t medical-image-segmentation medical_segmentation/`
 3. `docker run -p 8888:8888 -it medical-image-segmentation`
-4. Use the special token linkn from the output from step 4 to navigate to the Jupyter notebook.
+4. Navigate to the [Jupyter notebook](http://localhost:8888).
 5. Open `training_segmentation_model.ipynb`
 6. Run the notebook
 
