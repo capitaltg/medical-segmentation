@@ -18,6 +18,6 @@ Install [Docker Desktop](https://www.docker.com/products/docker-desktop)
 
 ## Acknowledgements
 
-This repository was developed in the summer of 2021 by two CTG interns, [David Wu])(https://github.com/david-wu-dev) and [Chemda Wiener](https://github.com/ctw599).
+This repository was developed in the summer of 2021 by two CTG interns, [David Wu](https://github.com/david-wu-dev) and [Chemda Wiener](https://github.com/ctw599).
 
 Special thank you to Dr. Raymond Mak and Ahmed Hosny for their support and advice in developing this project.
