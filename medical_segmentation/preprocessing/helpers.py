@@ -1,6 +1,9 @@
 import os
 import math
+import logging
+
 import numpy as np
+import matplotlib.pyplot as plt
 from scipy import ndimage
 from PIL import Image
 
@@ -17,62 +20,48 @@ def build_mask(pixels_array):
     return mask
 
 
-def contour_to_pixels(contour_coord, ds):
+def contour_to_pixels(contour_coord, dicom_structure):
     x0 = contour_coord[len(contour_coord) - 3]
     y0 = contour_coord[len(contour_coord) - 2]
-    coord = []
+    coordinates = []
     for i in range(0, len(contour_coord), 3):
         # get the (x,y) coordinate, ignore Z
         x = contour_coord[i]
         y = contour_coord[i + 1]
         # compute the length from x,y to x0,y0
         # we do this to fill in the pixels from the contour points
-        l = math.sqrt((x - x0)**2 + (y - y0)**2)
+        length = math.sqrt((x - x0)**2 + (y - y0)**2)
         # round up length * 2, and add 1 to ensure all points in between
         # are filled in
-        l = math.ceil(l * 2) + 1
+        length = math.ceil(length * 2) + 1
         # add interpolated points
-        for j in range(1, l + 1):
-            coord.append([(x - x0) * j / l + x0, (y - y0) * j / l + y0])
+        for j in range(1, length + 1):
+            coordinates.append([(x - x0) * j / length + x0, (y - y0) * j / length + y0])
         # set the comparison points for next loop
         x0 = x
         y0 = y
+    return pixels_from_spacing(coordinates, dicom_structure)
 
-    x_spacing, y_spacing = float(ds.PixelSpacing[0]), float(ds.PixelSpacing[1])
-    origin_x, origin_y, _origin_z = ds.ImagePositionPatient
-
-    pixels = [(np.rint((y - origin_y) / y_spacing), np.rint((x - origin_x) / x_spacing)) for x, y in coord]
+def pixels_from_spacing(coordinates, dicom_structure):
+    origin_x, origin_y, _origin_z = dicom_structure.ImagePositionPatient
+    spacing_x, spacing_y = float(
+        dicom_structure.PixelSpacing[0]), float(dicom_structure.PixelSpacing[1]
+    )
+    pixels = [(np.rint((y - origin_y) / spacing_y),
+    np.rint((x - origin_x) / spacing_x)) for x, y in coordinates]
     pixels = [(int(x), int(y)) for x, y in list(set(pixels))]
-    return pixels
 
-
-def fetch_contour_sop_instance_uid(metadata, uid, base_path):
+def fetch_contour_sop_instance_uid(metadata, uid):
     structures = {item.ROINumber: item.ROIName for item in metadata.StructureSetROISequence}
     roi_seq = metadata.ROIContourSequence
-    left_lung_roi = find_roi_name(base_path)                  
     for roi in roi_seq:
-        if structures[roi.ReferencedROINumber] == left_lung_roi:
-            print('ROI Name:', structures[roi.ReferencedROINumber], roi.ReferencedROINumber)
-            contour_seq = roi.ContourSequence
-            contour_list = []
-            for c in contour_seq:
-                if c.ContourImageSequence[0].ReferencedSOPInstanceUID == uid:
-                    contour_list.append(c)
-                    print("OK!")
-            if len(contour_list) >= 1:
-                return contour_list
-
-def find_roi_name(dataset):
-    if 'IPSI' in dataset:     
-        return 'LUNG_IPSI'
-    elif 'CNTR' in dataset:   
-        return 'LUNG_CNTR'
-    elif 'LUNG1' in dataset:  
-        return 'Lung-Left'
-    elif 'LCTSC' in dataset:  
-        return 'Lung_L'
-    raise ValueError("unknown dataset")
-
+        if structures[roi.ReferencedROINumber] == 'Lung_L':
+            logging.info('ROI Name %s number %s',
+                structures[roi.ReferencedROINumber], roi.ReferencedROINumber)
+            for contour in roi.ContourSequence:
+                if contour.ContourImageSequence[0].ReferencedSOPInstanceUID == uid:
+                    return contour
+    return None
 
 def save_image_array(img_arr, target_path):
     img = Image.fromarray(img_arr.astype(np.uint8))
@@ -86,7 +75,7 @@ def normalize_intensity(img):
     return (img - HOUNSFIELD_MIN) / HOUNSFIELD_RANGE
 
 
-def save_images_to_files(plt, subdir, imgarr, contour_mask, dicom_file, output_dir = 'val-output'):
+def save_images_to_files(subdir, imgarr, contour_mask, dicom_file, output_dir = 'val-output'):
     masks_dir = os.path.join(output_dir, 'masks', 'lung_l')
     images_dir = os.path.join(output_dir, 'images', 'lung_l')
     plt.axis('off')

@@ -1,0 +1,4 @@
+[MESSAGES CONTROL]
+disable=C0114,C0116,E1120
+good-names=i,j,x,y,x0,y0
+extension-pkg-allow-list=math
