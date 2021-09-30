@@ -24,10 +24,8 @@ jobs:
           python3 -m pip install --upgrade pip
           pip install pylint
           pip install nbqa
-      - name: Install sandbox dependencies
-        run: |
-          if [ -f sandbox/requirements.txt ]; then pip install -r sandbox/requirements.txt; fi
+          pip install -r medical_segmentation/requirements.txt
       - name: Pylint
         run: |
-          pylint sandbox --rcfile=.pylintrc --init-hook='import sys; sys.path.append("sandbox/")'
-          nbqa pylint my_notebook.ipynb --disable=C0114
+          pylint medical_segmentation
+          nbqa pylint medical_segmentation/*.ipynb --disable=C0114
